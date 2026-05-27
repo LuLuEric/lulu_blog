@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>飞机大战 - Hexo</title>
+    <meta name="description" content="在线游玩飞机大战：驾驶战机，躲避弹幕，击落敌机。">
+    <meta name="author" content="Eric">
+    <link rel="icon" href="/lulu_blog/img/favicon.png">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <link rel="stylesheet" href="/lulu_blog/css/diaspora.css">
+    <style>
+        .game-lead {
+            margin-bottom: 24px;
+        }
+
+        .game-stage {
+            width: min(1120px, calc(100vw - 48px));
+            margin: 22px 0 18px calc((100% - min(1120px, calc(100vw - 48px))) / 2);
+        }
+
+        .game-frame {
+            display: block;
+            width: 100%;
+            height: min(760px, calc(100vh - 80px));
+            min-height: 620px;
+            border: 1px solid rgba(35, 50, 66, 0.2);
+            border-radius: 8px;
+            background: #070a10;
+        }
+
+        .game-open {
+            text-align: center;
+        }
+
+        @media (max-width: 720px) {
+            .game-stage {
+                width: calc(100vw - 20px);
+                margin-left: calc((100% - (100vw - 20px)) / 2);
+            }
+
+            .game-frame {
+                height: 76vh;
+                min-height: 560px;
+            }
+        }
+    </style>
+</head>
+
+<body class="loading">
+    <span id="config-title" style="display:none">Hexo</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="icon-home image-icon" href="javascript:;" target="_blank" rel="noopener" data-url="https://lulueric.github.io/lulu_blog/"></a>
+    <h3 class="subtitle">飞机大战</h3>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class="main">
+        <h1 class="title">飞机大战</h1>
+        <div class="stuff">
+            <span>2026-05-27</span>
+        </div>
+        <div class="content markdown">
+            <p class="game-lead">驾驶战机，躲开弹幕，击落敌机。现在，起飞。</p>
+            <div class="game-stage">
+                <iframe
+                    class="game-frame"
+                    src="/lulu_blog/games/plane-war/index.html"
+                    title="飞机大战小游戏"
+                    loading="eager"
+                    allow="autoplay"
+                ></iframe>
+            </div>
+            <p class="game-open"><a href="/lulu_blog/games/plane-war/index.html" target="_blank" rel="noopener">全屏打开游戏</a></p>
+        </div>
+    </div>
+</div>
+    </div>
+</div>
+</body>
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/lulu_blog/js/plugin.js"></script>
+<script src="/lulu_blog/js/diaspora.js"></script>
+</html>
