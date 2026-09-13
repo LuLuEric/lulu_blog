@@ -9,8 +9,8 @@ await readFile(resolve(blog, 'index.html'));
 const runtime = ['index.html', 'favicon.svg', 'src/app.js', 'src/onboarding.js', 'src/engine.js', 'src/ai.js', 'src/data.js', 'src/preview.js', 'src/icons.js', 'src/style.css', 'assets/congress-hall.png'];
 const source = ['.gitignore', 'AGENTS.md', 'README.md', 'ROADMAP.md', 'DECISION_LOG.md', 'CHANGELOG.md', 'package.json', 'start.cmd',
   'tests/engine.test.js', 'tests/onboarding.test.js', 'tests/cards-v2.test.js',
-  'scripts/serve.mjs', 'scripts/simulate.mjs', 'scripts/audit-cards.mjs', 'scripts/stage-blog.mjs', 'scripts/preview-blog.mjs',
-  'docs/RULES.md', 'docs/VERIFICATION.md', 'docs/DEPLOYMENT.md', 'docs/ART.md', 'docs/CARD_REVIEW.md'];
+  'scripts/serve.mjs', 'scripts/simulate.mjs', 'scripts/audit-cards.mjs', 'scripts/audit-favor.mjs', 'scripts/stage-blog.mjs', 'scripts/preview-blog.mjs',
+  'docs/RULES.md', 'docs/VERIFICATION.md', 'docs/DEPLOYMENT.md', 'docs/ART.md', 'docs/CARD_REVIEW.md', 'docs/FAVOR_BALANCE.md'];
 const files = [...runtime, ...source];
 const manifest = [];
 for (const path of files) {

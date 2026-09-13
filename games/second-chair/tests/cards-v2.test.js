@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { createGame, dispatch, validateState, observation, legalActions, decisionActor, upgradeState, nextIncome } from '../src/engine.js';
+import { createGame, dispatch, validateState, observation, legalActions, decisionActor, upgradeState, nextIncome, forecast } from '../src/engine.js';
 import { chooseAction } from '../src/ai.js';
 import { previewAction } from '../src/preview.js';
 
@@ -195,4 +195,66 @@ test('AI decisions cannot distinguish hidden shields, future draws or other hand
   const before = chooseAction(observation(s)); const changed = structuredClone(s); hand(changed, 1, ['network']); changed.rng = 42; changed.deck.reverse();
   assert.deepEqual(chooseAction(observation(changed)), before);
   for (const action of legalActions(s)) act(s, action);
+});
+
+test('balance: propaganda requires three upfront, refunds one and previews the capped gain', () => {
+  for (const favor of [50, 98]) {
+    let s = fixture(); hand(s, 0, ['propaganda']);
+    Object.assign(s.players[0], { influence: 2, peak: 12, favor });
+    reject(s, { type: 'play', index: 0 });
+    s.players[0].influence = 3;
+    const preview = previewAction(s, { type: 'play', index: 0 });
+    assert.equal(preview.cost.influence, 3);
+    assert.equal(preview.players[0].after.influence, 1);
+    assert.equal(preview.players[0].after.favor, favor === 50 ? 56 : 100);
+    s = act(s, { type: 'play', index: 0 });
+    assert.equal(s.players[0].influence, 1); assert.equal(s.players[0].peak, 12);
+    assert.equal(s.players[0].favor, favor === 50 ? 56 : 100); assert.equal(s.actions, 1);
+  }
+});
+
+test('balance: chorus adds thirteen table favor and excludes eliminated officials', () => {
+  let s = fixture(); hand(s, 0, ['chorus']);
+  const preview = previewAction(s, { type: 'play', index: 0 });
+  assert.deepEqual(preview.players.map(p => p.after.favor - p.before.favor), [10, 1, 1, 1]);
+  s = act(s, { type: 'play', index: 0 });
+  assert.deepEqual(s.players.map(p => p.favor), [60, 51, 51, 51]);
+  assert.equal(s.players[0].influence, 16); assert.equal(s.actions, 1);
+  s = fixture(); hand(s, 0, ['chorus']); s.players[0].favor = 96; s.players[1].favor = 100;
+  s.players[3].alive = false; s.players[3].favor = 12;
+  s = act(s, { type: 'play', index: 0 });
+  assert.deepEqual(s.players.map(p => p.favor), [100, 100, 51, 12]);
+});
+
+test('balance: forecast matches final settlement at suspicion boundaries', () => {
+  let s = fixture(); s.round = 12; s.order = [1, 2, 3, 0]; s.cursor = 3;
+  const peaks = [12, 13, 19, 30], losses = [5, 6, 8, 11];
+  for (const p of s.players) Object.assign(p, { influence: 3, peak: peaks[p.id], favor: 60 });
+  assert.deepEqual(s.players.map(forecast), losses);
+  s = act(s, { type: 'end' });
+  assert.equal(s.finished, true);
+  assert.deepEqual(s.players.map(p => p.favor), [55, 54, 52, 49]);
+});
+
+test('balance: increased round decay still grants a full turn to rescue with propaganda', () => {
+  let s = fixture(); hand(s, 0, ['propaganda']); s.order = [1, 2, 3, 0]; s.cursor = 3;
+  for (const p of s.players) Object.assign(p, { influence: 3, peak: 12 });
+  s.players[0].favor = 24; s.eventDeck = ['anniversary'];
+  s = act(s, { type: 'end' });
+  assert.equal(s.round, 2); assert.equal(s.players[0].favor, 19);
+  assert.equal(s.players[0].investigation.dueTurn, 2); assert.equal(s.players[0].alive, true);
+  while (s.active !== 0) s = act(s, { type: 'end' });
+  assert.equal(s.actions, 2); assert.equal(s.players[0].turns, 2);
+  s = act(s, { type: 'play', index: 0 });
+  assert.equal(s.players[0].favor, 25); assert.equal(s.players[0].investigation, null);
+  assert.equal(s.actions, 1); assert.equal(s.players[0].alive, true);
+});
+
+test('balance: final review keeps twenty eligible and purges nineteen after decay', () => {
+  let s = fixture(); s.round = 12; s.order = [1, 2, 3, 0]; s.cursor = 3;
+  for (const p of s.players) Object.assign(p, { influence: 3, peak: 12 });
+  s.players[0].favor = 25; s.players[1].favor = 24;
+  s = act(s, { type: 'end' });
+  assert.equal(s.players[0].favor, 20); assert.equal(s.players[0].alive, true);
+  assert.equal(s.players[1].favor, 19); assert.equal(s.players[1].alive, false);
 });

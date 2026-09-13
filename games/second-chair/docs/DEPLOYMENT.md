@@ -9,7 +9,7 @@
 - Pages 发布源：`main` 分支的根目录，HTTPS 开启；2026-09-12 通过 GitHub CLI 只读核实。
 - 本地博客克隆：`.deploy/lulu_blog/`；该目录有独立 Git 历史，整个 `.deploy/` 已忽略。
 - 运行文件：`index.html`、`favicon.svg`、8 个 `src/` 文件（含新手引导和效果预览）和 `assets/congress-hall.png`，共 11 个文件。
-- 2026-09-13 用户确认将代码上传博客 GitHub 做版本管理：同目录同时保存 21 个项目说明、测试和开发脚本。完整清单在 `scripts/stage-blog.mjs`，仅这些文件进入游戏提交。
+- 2026-09-13 用户确认将代码上传博客 GitHub 做版本管理：v0.2.1 同目录保存 23 个项目说明、测试和开发脚本。完整清单在 `scripts/stage-blog.mjs`，仅这些文件进入游戏提交。
 - 存档属于当前浏览器和网站来源，本地预览与线上网站的进度不互通。
 
 ## 准备与验证
@@ -23,7 +23,7 @@ node --test
 node scripts/preview-blog.mjs
 ```
 
-`stage-blog.mjs` 同步显式清单中的 11 个运行文件与 21 个源码维护文件，并生成 `.deploy/release-manifest.json` 记录类别、字节数和 SHA-256。本地 `.deploy/` 基线、验收临时文件及任何环境配置不上传。介绍页与首页入口在博客克隆中单独维护。
+`stage-blog.mjs` 同步显式清单中的 11 个运行文件与 23 个源码维护文件，并生成 `.deploy/release-manifest.json` 记录类别、字节数和 SHA-256。本地 `.deploy/` 基线、验收临时文件及任何环境配置不上传。介绍页与首页入口在博客克隆中单独维护。
 
 预览使用 `http://127.0.0.1:4174/lulu_blog/`，完整模拟项目网站的路径前缀。检查从首页进入介绍页、点击开始游戏、出牌、12 轮终局和刷新续玩；同时复查原飞机大战入口。
 

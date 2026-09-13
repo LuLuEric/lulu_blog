@@ -78,7 +78,7 @@ test('complete institution pair adds only one bonus income; ownership cap enforc
 test('spending and relinquishing never erase the influence peak', () => {
   let s = fixture(); s.players[0].influence = 19; s.players[0].peak = 19;
   s = act(s, { type: 'appoint', institution: 'radio' });
-  assert.equal(s.players[0].peak, 19); assert.equal(forecast(s.players[0]), 6);
+  assert.equal(s.players[0].peak, 19); assert.equal(forecast(s.players[0]), 8);
   s = act(s, { type: 'relinquish', institution: 'radio' });
   assert.equal(s.players[0].peak, 19); assert.equal(s.players[0].favor, 59);
 });

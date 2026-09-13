@@ -45,7 +45,7 @@ export function chooseAction(view) {
     let value = influenceChange(-card.cost) - (card.loyaltyCost || 0) * loyaltyValue;
     switch (id) {
       case 'loyalty': value += loyaltyGain(15) + (p.loyalty + 15 >= Math.max(...view.players.filter(t => t.alive).map(t => t.loyalty)) ? favorGain(3) : 0); break;
-      case 'propaganda': value = favorGain(8) + influenceChange(2 - card.cost); break;
+      case 'propaganda': value = favorGain(card.favorGain) + influenceChange(card.influenceRefund - card.cost); break;
       case 'network': value += influenceChange(own.length ? 8 : 5) + (p.influence < 4 ? 4 : 0); break;
       case 'denounce': value += t ? attack(t, 10) : 5; break;
       case 'levy': {
@@ -60,7 +60,10 @@ export function chooseAction(view) {
         break;
       }
       case 'shield': value += (projected < 32 ? 9 : 5) + (own.length ? 2 : 0); break;
-      case 'chorus': value += favorGain(12) - 2.5; break;
+      case 'chorus': {
+        const sharedFavor = view.players.filter(t => t.alive && t.id !== p.id).reduce((sum, t) => sum + Math.min(card.rivalFavorGain, 100 - t.favor), 0);
+        value += favorGain(card.favorGain) - sharedFavor * 0.28; break;
+      }
       case 'dossier': value += (view.actions === 0 ? (remaining ? 3 : -10) : 6) - (a.giveIndex === undefined ? 2 : Math.max(0, cardScore(p.hand[a.giveIndex])) * 0.65); break;
       case 'extreme': value += favorGain(18) + (p.investigation && p.favor < 20 ? 3 : 0); break;
       case 'discipline': value += loyaltyGain(5) + view.players.filter(t => t.alive && t.id !== p.id).reduce((n, t) => n + incomeDamage(t, 8), 0); break;

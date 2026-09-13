@@ -51,7 +51,7 @@ export function actionCost(s, a) {
 }
 const BLOCKABLE = ['denounce', 'transfer', 'frame', 'unanimous'];
 export function suspicion(p) { return Math.ceil(Math.max(0, p.peak - 12) / 3); }
-export function forecast(p) { return 3 + suspicion(p); }
+export function forecast(p) { return RULES.favorDecay + suspicion(p); }
 
 function review(s, p) {
   if (!p.alive) return;
@@ -161,7 +161,7 @@ function endRound(s) {
   record(s, `第 ${s.round} 轮结束，元首开始审阅名单。`, 'event');
   for (const p of s.players.filter(p => p.alive)) {
     const risk = suspicion(p);
-    change(s, p, { favor: -(3 + risk), loyalty: -5 }, `恩宠折旧 3 + 猜忌 ${risk}（峰值 ${p.peak}）`);
+    change(s, p, { favor: -forecast(p), loyalty: -5 }, `恩宠折旧 ${RULES.favorDecay} + 猜忌 ${risk}（峰值 ${p.peak}）`);
   }
   if (s.round === RULES.rounds) finish(s);
   else beginRound(s);
@@ -310,7 +310,7 @@ function play(s, p, a) {
       change(s, p, { loyalty: 15 }, card.name);
       if (s.players.filter(t => t.alive).every(t => p.loyalty >= t.loyalty)) change(s, p, { favor: 3 }, '忠诚领先');
       break;
-    case 'propaganda': change(s, p, { favor: 8, influence: 2 }, card.name); break;
+    case 'propaganda': change(s, p, { favor: card.favorGain, influence: card.influenceRefund }, card.name); break;
     case 'network': change(s, p, { influence: owned(s, p.id).length ? 8 : 5 }, card.name); break;
     case 'denounce': case 'transfer': case 'frame': case 'unanimous': attack(s, p, a, id); break;
     case 'levy': transferInfluence(s, target, p, sets(s, p.id) ? 8 : 5, card.name); break;
@@ -321,7 +321,7 @@ function play(s, p, a) {
       record(s, `${p.name}与${target.name}交换了各 1 张未公开档案。`);
       change(s, p, { favor: 5 }, card.name); break;
     }
-    case 'chorus': for (const t of s.players.filter(t => t.alive)) change(s, t, { favor: t.id === p.id ? 12 : 3 }, card.name); break;
+    case 'chorus': for (const t of s.players.filter(t => t.alive)) change(s, t, { favor: t.id === p.id ? card.favorGain : card.rivalFavorGain }, card.name); break;
     case 'dossier': {
       const [discarded] = p.hand.splice(selectedIndex, 1);
       p.dossierUsed = true; draw(s, p, 2); s.discard.push(discarded);

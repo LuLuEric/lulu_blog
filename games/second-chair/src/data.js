@@ -1,15 +1,15 @@
-export const RULES = Object.freeze({ rounds: 12, actions: 2, handLimit: 7, loyalty: 40, influence: 6, favor: 50, threshold: 20, institutionCost: 5, institutionLimit: 3 });
+export const RULES = Object.freeze({ rounds: 12, actions: 2, handLimit: 7, loyalty: 40, influence: 6, favor: 50, favorDecay: 5, threshold: 20, institutionCost: 5, institutionLimit: 3 });
 
 export const CARDS = Object.freeze({
   loyalty: { name: '忠诚表态', cost: 2, type: '忠诚', color: 'blue', icon: 'shield', text: '立即获得 15 忠诚。随后若忠诚为存活官员中最高（含并列），立即再得 3 宠幸。', quote: '忠诚必须每天重新提交。' },
-  propaganda: { name: '强力宣传', cost: 3, type: '宣传', color: 'red', icon: 'speaker', text: '先支付 3 影响力，立即获得 8 宠幸并返还 2 影响力；净耗 1 影响力。', quote: '报纸上只有一种声音，署名却可以是你。' },
+  propaganda: { name: '强力宣传', cost: 3, favorGain: 6, influenceRefund: 1, type: '宣传', color: 'red', icon: 'speaker', text: '先支付 3 影响力，立即获得 6 宠幸并返还 1 影响力；净耗 2 影响力。', quote: '报纸上只有一种声音，署名却可以是你。' },
   network: { name: '资源渗透', cost: 0, type: '经营', color: 'green', icon: 'building', text: '立即获得 5 影响力；持有至少一处机构时改为 8。新增权势可能提高本轮猜忌。', quote: '每个部门，都有一扇后门。' },
   denounce: { name: '定向举报', cost: 4, type: '阴谋', color: 'purple', icon: 'eye', target: 'rival', text: '立即使目标宠幸 -10。目标可用挡箭牌拦截；被拦截时，你的宠幸 -4。', quote: '事实尚未查明，结论已经拟好。' },
   levy: { name: '专项摊派', cost: 3, type: '经营', color: 'green', icon: 'coins', target: 'rival', text: '从目标收取最多 5 影响力，自己有完整机构组时最多 8；到账受目标余额与自身上限限制。', quote: '这是自愿的。名单已经印好了。' },
   trade: { name: '秘密交易', cost: 3, gift: 2, selection: 'give', type: '交易', color: 'gold', icon: 'handshake', target: 'rival', text: '合计花费 3 影响力，其中 2 给目标；自己立即 +5 宠幸。选一张其他手牌，交换目标随机一张。', quote: '有些档案的价值，取决于它离你的办公室有多远。' },
   transfer: { name: '人事调动', cost: 7, type: '夺权', color: 'purple', icon: 'building', target: 'institution', text: '接管对手一处机构，下轮开始产生收入；最多持有三处。原负责人可用挡箭牌拦截。', quote: '你只是暂时负责，暂时没有期限。' },
   shield: { name: '挡箭牌', cost: 2, actions: 0, type: '反应', color: 'blue', icon: 'shield', text: '遇到举报、夺权、栽赃或一致通过时，可付费弃置本牌，拦截该次攻击。不占行动，受袭时选择使用。', quote: '文件上的签字，恰好不是你的。' },
-  chorus: { name: '集体颂词', cost: 4, type: '宣传', color: 'red', icon: 'star', text: '自己立即获得 12 宠幸；其他存活官员各获得 3 宠幸。', quote: '掌声整齐，领掌的人尤其整齐。' },
+  chorus: { name: '集体颂词', cost: 4, favorGain: 10, rivalFavorGain: 1, type: '宣传', color: 'red', icon: 'star', text: '自己立即获得 10 宠幸；其他存活官员各获得 1 宠幸。', quote: '掌声整齐，领掌的人尤其整齐。' },
   dossier: { name: '机密档案', cost: 1, actions: 0, selection: 'discard', type: '情报', color: 'gold', icon: 'file', text: '弃一张其他手牌，再摸两张。不占行动；每次轮到自己限用一次，行动次数用完也可使用。', quote: '保密级别：只保留对你有用的部分。' },
   extreme: { name: '极端表忠', cost: 1, loyaltyCost: 20, type: '险招', color: 'red', icon: 'flame', text: '消耗 20 忠诚，立即获得 18 宠幸。须足额支付；忠诚降低会影响未来收入与忠诚排名。', quote: '我忠于组织，但我更忠于您。' },
   discipline: { name: '纪律整顿', cost: 3, type: '整肃', color: 'purple', icon: 'gavel', text: '其他存活官员立即各失去 8 忠诚，自己获得 5 忠诚。影响后续收入与忠诚排名。', quote: '先统一思想，再决定思想是什么。' },
