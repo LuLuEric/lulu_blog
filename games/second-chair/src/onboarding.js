@@ -22,9 +22,9 @@ export function readGuide(raw) {
 
 // Only inspect the player's own hand and currently legal choices; never advance the game.
 export function teachingAction(game) {
-  if (game.finished || game.active !== 0 || !game.players[0].alive) return null;
+  if (game.finished || game.phase !== 'turn' || game.active !== 0 || !game.players[0].alive) return null;
   const actions = legalActions(game);
-  for (const id of ['loyalty', 'alibi', 'propaganda', 'chorus', 'retreat', 'shield', 'network', 'dossier']) {
+  for (const id of ['loyalty', 'alibi', 'propaganda', 'chorus', 'retreat', 'network', 'dossier']) {
     const action = actions.find(a => a.type === 'play' && game.players[0].hand[a.index] === id);
     if (action) return action;
   }

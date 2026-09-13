@@ -1404,6 +1404,32 @@ dialog p {
   color:#a29e7e;
   margin:0
 }
+.card-budget {
+  display:block;
+  margin:0 0 7px;
+  font-size:10px;
+  line-height:1.6;
+  color:#625030;
+  font-weight:700
+}
+.hand-card.large .card-budget { font-size:12px; }
+.hand-choices, .response-options {
+  display:grid;
+  gap:7px;
+  margin:12px 0
+}
+.hand-choices { max-height:265px; overflow-y:auto; padding:2px; }
+.hand-choices .target-option { width:100%; }
+.hand-choices .target-option small, .response-options .target-option small { font-size:12px; line-height:1.65; }
+.preview-player { padding:12px 0; border-bottom:1px solid var(--line); }
+.preview-player>strong { font-size:13px; color:var(--gold); }
+.preview-values { display:flex; flex-wrap:wrap; gap:12px 22px; margin:8px 0; }
+.action-preview .preview-note { margin:9px 0; padding-left:9px; border-left:2px solid #8b7850; font-size:12px; line-height:1.75; }
+.action-preview .preview-transfer { display:flex; align-items:center; gap:7px; margin:12px 0; font-size:12px; color:var(--gold); }
+.action-preview>small { display:block; margin:12px 0; line-height:1.7; }
+.action-preview .danger-text { color:#dea186; }
+.version-note { padding:10px 14px; font-size:12px; line-height:1.7; color:var(--gold); border:1px solid var(--line); }
+.catalog-cost { display:block; margin:9px 0; color:var(--gold); line-height:1.6; }
 .action-error {
   color:#d3a18a!important;
   display:flex;
